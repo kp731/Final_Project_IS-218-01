@@ -6,7 +6,7 @@ from flask import current_app as app
 from pymysql.cursors import DictCursor
 from flaskext.mysql import MySQL
 from app.app import mysql
-
+from app.forms import ContactForm
 
 @app.route('/', methods=['GET'])
 def index():
@@ -127,7 +127,23 @@ def contact():
     form = ContactFrom()
     if form.validate_on_submit():
         return redirect("/", code=302)
-    return render_template("contact.html", form=form)
+    return render_template("te/contact.html", form=form)
+
+@app.errorhandler(404)
+def not_found():
+    """Page not found."""
+    return make_response(
+        'SORRY. THIS PAGE IS NOT FOUND.',
+        404
+     )
+
+@app.errorhandler(400)
+def bad_request():
+    """Bad request."""
+    return make_response(
+        'BAD REQUEST! THIS SERVER DOES NOT SUPPORT YOUR REQUEST.',
+        400
+    )
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
