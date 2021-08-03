@@ -122,5 +122,12 @@ def api_delete(travel_id) -> str:
     return resp
 
 
+@app.route('/contact', methods = ['GET', 'POST'])
+def contact():
+    form = ContactFrom()
+    if form.validate_on_submit():
+        return redirect("/", code=302)
+    return render_template("contact.html", form=form)
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
