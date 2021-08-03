@@ -4,18 +4,21 @@ from flask import Flask, request, Response, redirect
 from flask import render_template
 from flaskext.mysql import MySQL
 from pymysql.cursors import DictCursor
+from app.forms import ContactForm
 
 
 app = Flask(__name__,template_folder="templates")
+app.config.from_pyfile('config.py')
 mysql = MySQL(cursorclass=DictCursor)
-
+mysql.init_app(app)
+'''
 app.config['MYSQL_DATABASE_HOST'] = 'db'
 app.config['MYSQL_DATABASE_USER'] = 'root'
 app.config['MYSQL_DATABASE_PASSWORD'] = 'root'
 app.config['MYSQL_DATABASE_PORT'] = 3306
 app.config['MYSQL_DATABASE_DB'] = 'airtravel'
 mysql.init_app(app)
-
+'''
 
 @app.route('/', methods=['GET'])
 def index():
