@@ -7,6 +7,14 @@ from pymysql.cursors import DictCursor
 from flaskext.mysql import MySQL
 from app.app import mysql
 from app.forms import ContactForm
+from app.forms import ContactForm
+from flask import Blueprint
+
+#Blueprint Configuration
+home_bp = Blueprint(
+    'home_dp', __name__,
+    template_folder='templates'
+)
 
 @app.route('/', methods=['GET'])
 def index():
@@ -127,7 +135,7 @@ def contact():
     form = ContactFrom()
     if form.validate_on_submit():
         return redirect("/", code=302)
-    return render_template("te/contact.html", form=form)
+    return render_template("contact.html", form=form)
 
 @app.errorhandler(404)
 def not_found():
