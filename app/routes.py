@@ -9,6 +9,7 @@ from datetime import datetime as dt
 from flask import current_app as app
 from .application.home.models import db, User
 
+
 #Blueprint Configuration
 home_bp = Blueprint(
     'home_dp', __name__,
@@ -174,7 +175,7 @@ def api_delete(travel_id) -> str:
 
 @home_bp.route('/contact', methods = ['GET', 'POST'])
 def contact():
-    form = ContactFrom()
+    form = ContactForm()
     if form.validate_on_submit():
         return redirect("/", code=302)
     return render_template("contact.html", form=form)
@@ -194,6 +195,31 @@ def bad_request():
         'BAD REQUEST! THIS SERVER DOES NOT SUPPORT YOUR REQUEST.',
         400
     )
+
+main_bp = Blueprint(
+    'main_bp', __name__,
+    template_folder='templates',
+    static_folder='static'
+)
+@main_bp.route('/', methods=['GET'])
+@login_required
+def dashboard():
+    return render_template(
+        'dashboard.jinja2',
+        title='Flask-Login Tutorial.',
+        template='dashboard-template',
+        current_user= current_user,
+        body="You are now logged in!"
+    )
+@main_bp.route("/logout")
+@login_required
+def logout():
+    """User log-out logic."""
+    logout_user()
+    return redirect(url_for('auth_bp.login'))
+
+
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
